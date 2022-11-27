@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { ParsedUrlQuery } from "querystring"
-import { CharactersListSearchParams } from "../api/swapi"
+import { CharactersListParams } from "../api/swapi"
 
 const pageSchema = z.preprocess((a) => {
   const defaultPage = 1
@@ -15,7 +15,7 @@ const searchSchema = z.string().nullish().default(null)
 
 export const getCharacterListSearchParams = (
   query: ParsedUrlQuery
-): CharactersListSearchParams => {
+): CharactersListParams => {
   const search = searchSchema.parse(query.search)
 
   const page = pageSchema.parse(query.page)
@@ -25,7 +25,7 @@ export const getCharacterListSearchParams = (
 
 export const setCharacterListParams = (
   sourceUrl: URL,
-  { page, search }: CharactersListSearchParams
+  { page, search }: CharactersListParams
 ) => {
   const url = new URL(sourceUrl)
 

@@ -9,8 +9,8 @@ import {
 } from "../helpers/characterListUrl"
 import {
   characterSearchQueryFn,
-  getCharacterSearchQueryKey,
-} from "../hooks/charactersList/useCharactersSearchQuery"
+  getCharactersSearchQueryKey,
+} from "../hooks/search/useCharactersSearchQuery"
 import { useDebouncedValue } from "../hooks/utils/useDebounceValue"
 import { SearchBar } from "../components/search/SearchBar"
 import { CharactersList } from "../components/characters/CharactersList"
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<{
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: getCharacterSearchQueryKey(params),
+    queryKey: getCharactersSearchQueryKey(params),
     queryFn: characterSearchQueryFn,
   })
 

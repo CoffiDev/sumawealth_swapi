@@ -2,6 +2,8 @@ import { setCharacterListParams } from "../../helpers/characterListUrl"
 
 const base = "https://swapi.dev"
 
+export const peoplePath = "/api/people/"
+
 type ResponsePagination<Results> = {
   count: number
   next: string | null
@@ -28,17 +30,29 @@ export type People = {
   vehicles: string[]
 }
 
-export type PeopleResponse = ResponsePagination<People>
+export type PeoplePaginatedResponse = ResponsePagination<People>
 
-export type CharactersListSearchParams = {
+export type CharactersListParams = {
   page: number | null
   search: string | null
 }
 
+export type CharacterDetailsParams = {
+  id: string
+}
+
 export const getCharactersList = async (
-  params: CharactersListSearchParams
-): Promise<PeopleResponse> => {
-  const url = setCharacterListParams(new URL("api/people", base), params)
+  params: CharactersListParams
+): Promise<PeoplePaginatedResponse> => {
+  const url = setCharacterListParams(new URL(peoplePath, base), params)
   const res = await fetch(url)
-  return (await res.json()) as PeopleResponse
+  return (await res.json()) as PeoplePaginatedResponse
+}
+
+export const getCharacterDetails = async (
+  params: CharacterDetailsParams
+): Promise<People> => {
+  const url = new URL(`${peoplePath}/${params.id}`, base)
+  const res = await fetch(url)
+  return (await res.json()) as People
 }

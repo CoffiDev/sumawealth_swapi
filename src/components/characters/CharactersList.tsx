@@ -1,9 +1,10 @@
-import { CharactersListSearchParams } from "../../api/swapi"
-import { useCharactersSearchQuery } from "../../hooks/charactersList/useCharactersSearchQuery"
+import { CharactersListParams, peoplePath } from "../../api/swapi"
+import { useCharactersSearchQuery } from "../../hooks/search/useCharactersSearchQuery"
 import { PaginationLink } from "../search/PaginationLink"
+import Link from "next/link"
 
 export const CharactersList = (
-  props: CharactersListSearchParams & { pathname: string }
+  props: CharactersListParams & { pathname: string }
 ) => {
   const { data, isLoading, isError, isPaused } = useCharactersSearchQuery({
     search: props.search,
@@ -29,10 +30,16 @@ export const CharactersList = (
   }
 
   const resultsList = results?.map((people) => {
+    const target = new URL(people.url).pathname.replace(peoplePath, "")
+
     return (
-      <div key={people.name} className="text-white">
+      <Link
+        href={{ pathname: `/characters/${target}` }}
+        key={people.name}
+        className="text-white underline"
+      >
         {people.name}
-      </div>
+      </Link>
     )
   })
 
