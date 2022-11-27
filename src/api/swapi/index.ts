@@ -1,4 +1,4 @@
-import { setCharacterListParams } from "../../helpers/appendParams"
+import { setCharacterListParams } from "../../helpers/characterListUrl"
 
 const base = "https://swapi.dev"
 
