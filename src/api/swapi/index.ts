@@ -1,4 +1,6 @@
-const base = "https://swapi.dev/api"
+import { setCharacterListParams } from "../../helpers/appendParams"
+
+const base = "https://swapi.dev"
 
 type ResponsePagination<Results> = {
   count: number
@@ -28,23 +30,15 @@ export type People = {
 
 export type PeopleResponse = ResponsePagination<People>
 
-export const getCharactersList = async ({
-  page,
-  search,
-}: {
-  page?: number | null
-  search?: string | null
-}): Promise<PeopleResponse> => {
-  const url = new URL("people/", base)
+export type CharactersListSearchParams = {
+  page: number | null
+  search: string | null
+}
 
-  if (page) {
-    url.searchParams.append("page", page.toString())
-  }
-
-  if (search) {
-    url.searchParams.append("search", search)
-  }
-
+export const getCharactersList = async (
+  params: CharactersListSearchParams
+): Promise<PeopleResponse> => {
+  const url = setCharacterListParams(new URL("api/people", base), params)
   const res = await fetch(url)
   return (await res.json()) as PeopleResponse
 }

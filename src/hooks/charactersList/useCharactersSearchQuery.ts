@@ -1,21 +1,24 @@
-import { useQuery } from "@tanstack/react-query"
-import { getCharactersList } from "../../api/swapi"
+import { QueryFunction, useQuery, UseQueryOptions } from "@tanstack/react-query"
+import {
+  type CharactersListSearchParams,
+  type PeopleResponse,
+  getCharactersList,
+} from "../../api/swapi"
 
-const useCharactersSearchQuery = ({
-  search,
-  page,
-}: {
-  search: string | null
-  page: number | null
-}) => {
-  return useQuery({
-    queryKey: ["searchCharacters", { search, page }] as const,
-    queryFn: ({ queryKey }) => {
-      const [, payload] = queryKey
+export const getCharacterSearchQueryKey = (s: CharactersListSearchParams) =>
+  ["searchCharacters", s.search, s.page] as const
 
-      return getCharactersList(payload)
-    },
-  })
+export const characterSearchQueryFn: QueryFunction<
+  PeopleResponse,
+  ReturnType<typeof getCharacterSearchQueryKey>
+> = ({ queryKey }) => {
+  const [, search, page] = queryKey
+
+  return getCharactersList({ search, page })
 }
 
-export { useCharactersSearchQuery }
+export const useCharactersSearchQuery = (params: CharactersListSearchParams) =>
+  useQuery({
+    queryKey: getCharacterSearchQueryKey(params),
+    queryFn: characterSearchQueryFn,
+  })
