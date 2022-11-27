@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@tanstack/react-query': ^4.18.0
   '@types/node': ^18.0.0
   '@types/react': ^18.0.14
   '@types/react-dom': ^18.0.5
@@ -11,7 +12,7 @@ specifiers:
   eslint-config-next: 13.0.2
   next: 13.0.2
   postcss: ^8.4.14
-  prettier: ^2.7.1
+  prettier: ^2.8.0
   prettier-plugin-tailwindcss: ^0.1.13
   react: 18.2.0
   react-dom: 18.2.0
@@ -20,6 +21,7 @@ specifiers:
   zod: ^3.18.0
 
 dependencies:
+  '@tanstack/react-query': 4.18.0_biqbaboplfbrettd7655fr4n2y
   next: 13.0.2_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -250,6 +252,28 @@ packages:
     resolution: {integrity: sha512-rEUrBSGIoSFuYxwBYtlUFMlE2CwGhmW+w9355/5oduSw8e5h2+Tj4UrAGNNgP9915++wj5vkQo0UuOBqOAq4nw==}
     dependencies:
       tslib: 2.4.1
+    dev: false
+
+  /@tanstack/query-core/4.18.0:
+    resolution: {integrity: sha512-PP4mG8MD08sq64RZCqMfXMYfaj7+Oulwg7xZ/fJoEOdTZNcPIgaOkHajZvUBsNLbi/0ViMvJB4cFkL2Jg2WPbw==}
+    dev: false
+
+  /@tanstack/react-query/4.18.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-s1kdbGMdVcfUIllzsHUqVUdktBT5uuIRgnvrqFNLjl9TSOXEoBSDrhjsGjao0INQZv8cMpQlgOh3YH9YtN6cKw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.18.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false
 
   /@types/json-schema/7.0.11:
