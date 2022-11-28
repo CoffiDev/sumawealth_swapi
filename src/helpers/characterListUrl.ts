@@ -16,9 +16,11 @@ const searchSchema = z.string().nullish().default(null)
 export const getCharacterListSearchParams = (
   query: ParsedUrlQuery
 ): CharactersListParams => {
-  const search = searchSchema.parse(query.search)
+  const searchSafe = searchSchema.safeParse(query.search)
+  const search = searchSafe.success ? searchSafe.data : null
 
-  const page = pageSchema.parse(query.page)
+  const pageSafe = pageSchema.safeParse(query.page)
+  const page = pageSafe.success ? pageSafe.data : null
 
   return { search, page }
 }

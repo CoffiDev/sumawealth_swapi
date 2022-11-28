@@ -4,13 +4,6 @@ const base = "https://swapi.dev"
 
 export const peoplePath = "/api/people/"
 
-type ResponsePagination<Results> = {
-  count: number
-  next: string | null
-  previous: string | null
-  results: Results[]
-}
-
 export type People = {
   birth_year: string
   eye_color: string
@@ -30,7 +23,21 @@ export type People = {
   vehicles: string[]
 }
 
-export type PeoplePaginatedResponse = ResponsePagination<People>
+type ResponsePagination<Results> = {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Results[]
+}
+
+type ResponseData<Response> = {
+  status: number
+  result: Response
+}
+
+export type PeoplePaginatedResponse = ResponseData<ResponsePagination<People>>
+
+export type PeopleDetailsResponse = ResponseData<People>
 
 export type CharactersListParams = {
   page: number | null
@@ -38,7 +45,7 @@ export type CharactersListParams = {
 }
 
 export type CharacterDetailsParams = {
-  id: string
+  id: number
 }
 
 export const getCharactersList = async (
@@ -46,13 +53,23 @@ export const getCharactersList = async (
 ): Promise<PeoplePaginatedResponse> => {
   const url = setCharacterListParams(new URL(peoplePath, base), params)
   const res = await fetch(url)
-  return (await res.json()) as PeoplePaginatedResponse
+  const result = (await res.json()) as ResponsePagination<People>
+
+  return {
+    result,
+    status: res.status,
+  }
 }
 
 export const getCharacterDetails = async (
   params: CharacterDetailsParams
-): Promise<People> => {
-  const url = new URL(`${peoplePath}/${params.id}`, base)
+): Promise<PeopleDetailsResponse> => {
+  const url = new URL(`${peoplePath}${params.id}`, base)
   const res = await fetch(url)
-  return (await res.json()) as People
+  const result = (await res.json()) as People
+
+  return {
+    result,
+    status: res.status,
+  }
 }

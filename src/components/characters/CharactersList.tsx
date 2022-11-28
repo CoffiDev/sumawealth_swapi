@@ -23,7 +23,11 @@ export const CharactersList = (
     return <p>Loading...</p>
   }
 
-  const results = data?.results
+  if (data?.status !== 200) {
+    return <p>Not found</p>
+  }
+
+  const results = data?.result.results
 
   if (results?.length === 0) {
     return <p>No results found</p>
@@ -45,19 +49,19 @@ export const CharactersList = (
 
   return (
     <>
-      <p className="text-[hsl(280,100%,70%)]">Total: {data?.count}</p>
+      <p className="text-[hsl(280,100%,70%)]">Total: {data?.result.count}</p>
 
       {resultsList}
 
       <div className="flex justify-between items-baseline gap-8">
         <PaginationLink
-          url={data?.previous}
+          url={data?.result.previous}
           label={"Previous page"}
           pathname={props.pathname}
         />
 
         <PaginationLink
-          url={data?.next}
+          url={data?.result.next}
           label={"Next page"}
           pathname={props.pathname}
         />

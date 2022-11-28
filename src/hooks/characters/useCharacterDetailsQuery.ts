@@ -9,7 +9,7 @@ export const getCharacterDetailsQueryKey = (params: CharacterDetailsParams) =>
   ["characterDetails", params.id] as const
 
 export const characterDetailsQueryFn: QueryFunction<
-  People,
+  Awaited<ReturnType<typeof getCharacterDetails>>,
   ReturnType<typeof getCharacterDetailsQueryKey>
 > = ({ queryKey }) => {
   const [, id] = queryKey
