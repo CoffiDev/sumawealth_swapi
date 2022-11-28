@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import { useDebounce } from "./useDebounce"
 
+/*
+This hook manages the state to have a debounced value
+but leave the implementation of the effects of it to
+the calling function.
+*/
 export const useDebouncedValue = ({
   defaultValue,
   delay = 500,

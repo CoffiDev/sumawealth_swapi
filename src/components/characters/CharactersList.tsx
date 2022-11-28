@@ -1,37 +1,26 @@
-import { CharactersListParams, peoplePath } from "../../api/swapi"
-import { useCharactersSearchQuery } from "../../hooks/search/useCharactersSearchQuery"
-import { PaginationLink } from "../search/PaginationLink"
 import Link from "next/link"
 
-export const CharactersList = (
-  props: CharactersListParams & { pathname: string }
-) => {
-  const { data, isLoading, isError, isPaused } = useCharactersSearchQuery({
-    search: props.search,
-    page: props.page,
-  })
+import { type PeoplePaginatedResponse, peoplePath } from "@/api/swapi"
+import { PaginationLink } from "@/components/search/PaginationLink"
 
-  if (isError) {
-    return <p>Error occurred!</p>
-  }
+/*
+This pure component is in charge of
+presenting the info from the search/page result.
 
-  if (isPaused) {
-    return <p>Check your internet connection</p>
-  }
-
-  if (isLoading) {
-    return <p>Loading...</p>
-  }
-
-  if (data?.status !== 200) {
-    return <p>Not found</p>
-  }
-
+It still has a couple of responsibilities, like rendering
+each list item, the total count and the pagination links,
+but this elements can be moved to other components as they
+need, for our current view, they can live inside this pure component
+without trouble.
+*/
+export const CharactersList = ({
+  data,
+  pathname,
+}: {
+  data: PeoplePaginatedResponse
+  pathname: string
+}) => {
   const results = data?.result.results
-
-  if (results?.length === 0) {
-    return <p>No results found</p>
-  }
 
   const resultsList = results?.map((people) => {
     const target = new URL(people.url).pathname.replace(peoplePath, "")
@@ -49,7 +38,7 @@ export const CharactersList = (
 
   return (
     <>
-      <p className="text-[hsl(280,100%,70%)]">Total: {data?.result.count}</p>
+      <p className="text-fuchsia-500">Total: {data?.result.count}</p>
 
       {resultsList}
 
@@ -57,13 +46,13 @@ export const CharactersList = (
         <PaginationLink
           url={data?.result.previous}
           label={"Previous page"}
-          pathname={props.pathname}
+          pathname={pathname}
         />
 
         <PaginationLink
           url={data?.result.next}
           label={"Next page"}
-          pathname={props.pathname}
+          pathname={pathname}
         />
       </div>
     </>

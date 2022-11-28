@@ -2,6 +2,15 @@ import { z } from "zod"
 import { ParsedUrlQuery } from "querystring"
 import { CharactersListParams } from "../api/swapi"
 
+/*
+Here we have some helper functions to handle tasks like building the right path,
+validate that the query params are valid, set default values in case they are not
+valid and build urls for navigation.
+
+These helpers allow us to have a place where we can deal with problems more related
+to transforming and validating data.
+*/
+
 const pageSchema = z.preprocess((a) => {
   const defaultPage = 1
   const preValue = parseInt(

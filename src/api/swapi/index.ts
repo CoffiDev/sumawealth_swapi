@@ -1,4 +1,4 @@
-import { setCharacterListParams } from "../../helpers/characterListUrl"
+import { setCharacterListParams } from "@/helpers/characterListUrl"
 
 const base = "https://swapi.dev"
 

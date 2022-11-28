@@ -11,7 +11,20 @@ import {
 } from "@/hooks/characters/useCharacterDetailsQuery"
 import { getDetailsParams } from "@/helpers/characterDetailsParams"
 import { MainWrapper } from "@/components/shared/MainWrapper"
-import { CharacterDetails } from "@/components/characters/CharacterDetails"
+import { CharacterDetailsContainer } from "@/components/characters/CharacterDetailsContainer"
+
+/*
+We are using static props with fallback here because potentially every
+character's page can be generated at some point, and we will be able to serve
+them as html, without the need to generate all of them upfront during built time.
+
+The page component also works as the "edge" of the application, the point where
+we connect parts of the request (the id on the url) with our API request. To prevent
+errors due to bad inputs, there are validation functions that help us to catch
+invalid IDs, to give more context to the user of why a request may be wrong
+
+This helps to have pure components down the tree.
+*/
 
 export const getStaticProps: GetStaticProps<{
   dehydratedState: DehydratedState
@@ -28,7 +41,6 @@ export const getStaticProps: GetStaticProps<{
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
-      isValidId: Boolean(id),
     },
   }
 }
@@ -40,35 +52,33 @@ export const getStaticPaths: GetStaticPaths = () => {
   }
 }
 
-const CharacterDetailsPage = ({ isValidId }: { isValidId: boolean }) => {
+const CharacterDetailsPage = () => {
   const router = useRouter()
   const { id } = getDetailsParams(router.query)
+  const defaultInvalidId = -1
 
-  const { data, isLoading, isError } = useCharacterDetailsQuery({
-    id: id ?? -1,
+  const result = useCharacterDetailsQuery({
+    id: id ?? defaultInvalidId,
   })
-
-  let Content = null
-
-  if (isLoading || router.isFallback) {
-    Content = <p>Loading...</p>
-  } else if (!id || !isValidId) {
-    Content = <p>Invalid Id</p>
-  } else if (data?.status !== 200) {
-    Content = <p>Not found</p>
-  } else {
-    Content = <CharacterDetails character={data.result} />
-  }
 
   return (
     <>
       <Head>
-        <title>{data?.result.name}</title>
-        <meta name="description" content={`Swapi - ${data?.result.name}`} />
+        <title>{result?.data?.result.name}</title>
+        <meta
+          name="description"
+          content={`Swapi - ${result?.data?.result.name}`}
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <MainWrapper>{Content}</MainWrapper>
+      <MainWrapper>
+        <CharacterDetailsContainer
+          id={id}
+          isFallback={router.isFallback}
+          {...result}
+        />
+      </MainWrapper>
     </>
   )
 }

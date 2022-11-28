@@ -1,7 +1,10 @@
 import Link from "next/link"
-import { useCharacterDetailsQuery } from "@/hooks/characters/useCharacterDetailsQuery"
 import { People } from "../../api/swapi"
 
+/*
+This pure component is only in charge of
+presenting the info from a character.
+ */
 export const CharacterDetails = ({
   character: data,
 }: {
@@ -9,7 +12,7 @@ export const CharacterDetails = ({
 }) => {
   return (
     <>
-      <p className="text-[hsl(280,100%,70%)]">{data?.name}</p>
+      <p className="text-fuchsia-500">{data?.name}</p>
 
       <div className="text-white flex flex-col gap-8">
         <div className="flex justify-between align-baseline gap-8">
@@ -29,7 +32,7 @@ export const CharacterDetails = ({
         </div>
       </div>
 
-      <Link href={{ pathname: `/` }} className="text-[hsl(280,100%,70%)]">
+      <Link href={{ pathname: `/` }} className="text-fuchsia-500">
         Back
       </Link>
     </>

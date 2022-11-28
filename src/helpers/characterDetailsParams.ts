@@ -1,5 +1,11 @@
-import { z, ZodEffects } from "zod"
+import { z } from "zod"
 import { ParsedUrlQuery } from "querystring"
+
+/*
+Here we have a helper to validate the inputs for the details page.
+
+Zod provides simple and powerful validations
+*/
 
 const idSchema = z.preprocess((a) => {
   const preValue = parseInt(z.string().default("").parse(a), 10)
